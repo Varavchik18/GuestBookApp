@@ -1,10 +1,7 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MediatR;
-using AutoMapper;
-using Domain.Models;
+using Api.Controllers.Queries.Notes;
+using Api.Controllers.Commands.Notes;
 
 namespace YourApiProject.Controllers
 {
@@ -13,15 +10,11 @@ namespace YourApiProject.Controllers
     public class NotesController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
-
-        public NotesController(IMediator mediator, IMapper mapper)
+        public NotesController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
 
-        // GET api/notes
         [HttpGet("notes")]
         public async Task<IActionResult> GetNotes([FromQuery] GetNotesRequest request)
         {
@@ -39,9 +32,10 @@ namespace YourApiProject.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetNoteById([FromQuery] GetNoteByIdRequest request)
         {
-            try{
-            var result = await _mediator.Send(request);
-            return Ok(result);
+            try
+            {
+                var result = await _mediator.Send(request);
+                return Ok(result);
             }
             catch (NotFoundException ex)
             {
@@ -54,8 +48,8 @@ namespace YourApiProject.Controllers
         {
             try
             {
-            var result = await _mediator.Send(command);
-            return Ok(result);
+                var result = await _mediator.Send(command);
+                return Ok(result);
             }
             catch (NotFoundException ex)
             {
@@ -70,10 +64,10 @@ namespace YourApiProject.Controllers
         [HttpPut("{id}/update")]
         public async Task<IActionResult> UpdateNote(int id, [FromBody] UpdateNoteCommand command)
         {
-             try
+            try
             {
-            var result = await _mediator.Send(command);
-            return Ok(result);
+                var result = await _mediator.Send(command);
+                return Ok(result);
             }
             catch (NotFoundException ex)
             {
@@ -88,9 +82,10 @@ namespace YourApiProject.Controllers
         [HttpDelete("{id}/delete")]
         public async Task<IActionResult> DeleteNote([FromBody] DeleteNoteCommand command)
         {
-            try{
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            try
+            {
+                var result = await _mediator.Send(command);
+                return Ok(result);
             }
             catch (NotFoundException ex)
             {
