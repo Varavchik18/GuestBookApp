@@ -1,91 +1,9 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Study\\Programming Projects\\GuestBookApp\\api\\infrastructure\\Infrastructure.csproj": {}
+    "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Infrastructure\\Infrastructure.csproj": {}
   },
   "projects": {
-    "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Application\\Application.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Application\\Application.csproj",
-        "projectName": "Application",
-        "projectPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Application\\Application.csproj",
-        "packagesPath": "C:\\Users\\pasha\\.nuget\\packages\\",
-        "outputPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Application\\obj\\",
-        "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\pasha\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net7.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
-            "projectReferences": {
-              "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj": {
-                "projectPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
-          "dependencies": {
-            "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[7.0.4, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[7.0.4, )"
-            },
-            "Microsoft.Extensions.Configuration": {
-              "target": "Package",
-              "version": "[7.0.0, )"
-            },
-            "Microsoft.Extensions.DependencyInjection": {
-              "target": "Package",
-              "version": "[7.0.0, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
     "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -146,14 +64,14 @@
         }
       }
     },
-    "D:\\Study\\Programming Projects\\GuestBookApp\\api\\infrastructure\\Infrastructure.csproj": {
+    "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\infrastructure\\Infrastructure.csproj",
+        "projectUniqueName": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\infrastructure\\Infrastructure.csproj",
+        "projectPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Infrastructure\\Infrastructure.csproj",
         "packagesPath": "C:\\Users\\pasha\\.nuget\\packages\\",
-        "outputPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\infrastructure\\obj\\",
+        "outputPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -175,9 +93,6 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Application\\Application.csproj": {
-                "projectPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Application\\Application.csproj"
-              },
               "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj": {
                 "projectPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj"
               }
@@ -195,6 +110,12 @@
           "targetAlias": "net7.0",
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.4, )"
             },

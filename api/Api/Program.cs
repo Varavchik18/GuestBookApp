@@ -1,9 +1,10 @@
-using GuestBookApp.Application;
+using System.Reflection;
 using GuestBookApp.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
  
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); // Register AutoMapper profiles
+builder.Services.AddMediatR(_ => _.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.ConfigureInfraStructure(builder.Configuration);
-builder.Services.ConfigureApplication(builder.Configuration);
 // Add services to the container.
 
 builder.Services.AddControllers();
