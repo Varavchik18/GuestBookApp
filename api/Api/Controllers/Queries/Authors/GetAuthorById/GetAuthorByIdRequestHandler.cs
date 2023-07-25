@@ -16,7 +16,7 @@ public class GetAuthorByIdRequestHandler : IRequestHandler<GetAuthorByIdRequest,
 
     public async Task<GetAuthorByIdResponse> Handle(GetAuthorByIdRequest request, CancellationToken cancellationToken)
     {
-        var author = await _context.Authors.SingleAsync(x => x.IdAuthor == request.IdAuthor);
+        var author = await _context.Authors.SingleOrDefaultAsync(x => x.IdAuthor == request.IdAuthor);
         if (author == null || author.IdAuthor == 0)
         {
             throw new NotFoundException(nameof(Author), request.IdAuthor);

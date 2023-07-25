@@ -3,5 +3,5 @@ namespace Api.Controllers.Commands.Authors;
 
 public class DeleteAuthorCommand : IRequest<int>
 {
-    public int IdAuthor { get; set; }
+    protected internal int IdAuthor { get; set; }
 }

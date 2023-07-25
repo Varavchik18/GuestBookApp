@@ -14,7 +14,7 @@ public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand,
 
     public async Task<int> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
-        var author = await _context.Authors.SingleAsync(x => x.IdAuthor == request.AuthorId);
+        var author = await _context.Authors.SingleOrDefaultAsync(x => x.IdAuthor == request.AuthorId);
 
         if (author == null || author.IdAuthor == 0)
         {

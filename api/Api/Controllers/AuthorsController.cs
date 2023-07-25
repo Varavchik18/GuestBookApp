@@ -24,10 +24,14 @@ public class AuthorsController : ControllerBase
     }
 
     [HttpGet("{idAuthor}")]
-    public async Task<IActionResult> GetAuthorById(int idAuthor, [FromBody] GetAuthorByIdRequest query)
+    public async Task<IActionResult> GetAuthorById([FromRoute] int idAuthor)
     {
         try
         {
+            var query = new GetAuthorByIdRequest()
+            {
+                IdAuthor = idAuthor
+            };
             query.IdAuthor = idAuthor;
             var result = await _mediator.Send(query);
             return Ok(result);
