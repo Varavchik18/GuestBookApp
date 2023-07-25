@@ -30,11 +30,14 @@ namespace YourApiProject.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCommentById([FromRoute] int id, GetCommentByIdRequest request)
+        public async Task<IActionResult> GetCommentById([FromRoute] int id)
         {
             try
             {
-                request.IdComment = id;
+                var request = new GetCommentByIdRequest()
+                {
+                    IdComment = id
+                };
                 var result = await _mediator.Send(request);
                 return Ok(result);
             }

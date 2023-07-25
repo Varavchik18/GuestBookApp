@@ -5,6 +5,9 @@ public class GetCommentByIdMapper : Profile
 {
     public GetCommentByIdMapper()
     {
-        CreateMap<Comment, GetCommentByIdResponse>();
+        CreateMap<Comment, GetCommentByIdResponse>()
+          .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author));
+
+        CreateMap<Author, AuthorInfoDTO>();
     }
 }
