@@ -4,26 +4,26 @@ using System.Runtime.Serialization;
 [Serializable]
 public class NotFoundException : Exception
 {
-  private int idNote;
+    private int id;
 
-  public NotFoundException()
-  {
-  }
+    public NotFoundException()
+    {
+    }
 
-  public NotFoundException(string? message) : base(message)
-  {
-  }
+    public NotFoundException(string? message) : base(message)
+    {
+    }
 
-  public NotFoundException(string v, int idNote) : base($"The {v} with Id: {idNote} is not found")
-  {
-    this.idNote = idNote;
-  }
+    public NotFoundException(string v, int id) : base($"The {v} with Id: {id} is not found")
+    {
+        this.id = id;
+    }
 
-  public NotFoundException(string? message, Exception? innerException) : base(message, innerException)
-  {
-  }
+    public NotFoundException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
 
-  protected NotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
-  {
-  }
+    protected NotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+    }
 }

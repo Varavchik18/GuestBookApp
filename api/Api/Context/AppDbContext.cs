@@ -5,7 +5,7 @@ public class AppDbContext : DbContext, IAppDbContext
 {
     private readonly string _connectionString;
 
-    public DbSet<Note> Notes { get; set; }
+    public DbSet<Comment> Comments { get; set; }
     public DbSet<Author> Authors { get; set; }
     public AppDbContext() : base()
     { }
