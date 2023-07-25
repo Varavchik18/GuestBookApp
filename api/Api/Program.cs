@@ -7,14 +7,22 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddMediatR(_ => _.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.AddDbContext<AppDbContext>(options =>
-        {
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-        });
-
-builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("GuestBookUI", builder =>
+    {
+        builder.WithOrigins("http://localhost:9000") // Remove the trailing slash from the origin
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
+builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -27,6 +35,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("GuestBookUI");
 
 app.UseAuthorization();
 

@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Api.Controllers.Queries.Comments;
 using Api.Controllers.Commands.Comments;
+using Microsoft.AspNetCore.Cors;
 
 namespace YourApiProject.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("GuestBookUI")] 
     public class CommentsController : ControllerBase
     {
         private readonly IMediator _mediator;

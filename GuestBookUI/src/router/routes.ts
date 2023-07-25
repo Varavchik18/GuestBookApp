@@ -4,11 +4,11 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }]
+    children: [
+      { path: '', component: () => import('../components/CommentList.vue') }, // Renders CommentList component on the homepage
+      { path: 'add-comment', component: () => import('../components/AddComment.vue') } // Renders AddComment component on /add route
+    ]
   },
-
-  // Always leave this as last one,
-  // but you can also remove it
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')

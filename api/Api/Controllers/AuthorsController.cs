@@ -1,10 +1,12 @@
 using Api.Controllers.Commands.Authors;
 using Api.Controllers.Queries.Authors;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
+[EnableCors("GuestBookUI")] 
 public class AuthorsController : ControllerBase
 {
     private readonly IMediator _mediator;

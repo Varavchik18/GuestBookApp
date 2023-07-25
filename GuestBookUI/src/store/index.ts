@@ -39,8 +39,8 @@ export const storeKey: InjectionKey<VuexStore<StateInterface>> = Symbol('vuex-ke
 // Provide typings for `this.$router` inside Vuex stores
  declare module 'vuex' {
    export interface Store<S> {
-     readonly $router: Router;
-   }
+    readonly $router: Router;
+  }
  }
 
 export default store(function (/* { ssrContext } */) {
