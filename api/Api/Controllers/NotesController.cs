@@ -15,7 +15,7 @@ namespace YourApiProject.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("notes")]
+        [HttpGet("list")]
         public async Task<IActionResult> GetNotes([FromQuery] GetNotesRequest request)
         {
             try
@@ -30,10 +30,11 @@ namespace YourApiProject.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetNoteById([FromQuery] GetNoteByIdRequest request)
+        public async Task<IActionResult> GetNoteById([FromRoute] int id, GetNoteByIdRequest request)
         {
             try
             {
+                request.IdNote = id;
                 var result = await _mediator.Send(request);
                 return Ok(result);
             }
@@ -62,10 +63,11 @@ namespace YourApiProject.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public async Task<IActionResult> UpdateNote(int id, [FromBody] UpdateNoteCommand command)
+        public async Task<IActionResult> UpdateNote([FromRoute] int id, [FromBody] UpdateNoteCommand command)
         {
             try
             {
+                command.IdNote = id;
                 var result = await _mediator.Send(command);
                 return Ok(result);
             }
@@ -80,10 +82,11 @@ namespace YourApiProject.Controllers
         }
 
         [HttpDelete("{id}/delete")]
-        public async Task<IActionResult> DeleteNote([FromBody] DeleteNoteCommand command)
+        public async Task<IActionResult> DeleteNote([FromRoute] int id, [FromBody] DeleteNoteCommand command)
         {
             try
             {
+                command.IdNote = id;
                 var result = await _mediator.Send(command);
                 return Ok(result);
             }

@@ -6,6 +6,9 @@ public class GetNotesMapper : Profile
 {
     public GetNotesMapper()
     {
-        CreateMap<Note, GetNotesResponse>();
+        CreateMap<Note, GetNotesResponse>()
+           .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author));
+
+        CreateMap<Author, AuthorInfoDTO>();
     }
 }

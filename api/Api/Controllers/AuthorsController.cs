@@ -16,7 +16,7 @@ public class AuthorsController : ControllerBase
 
     #region Queries
 
-    [HttpGet]
+    [HttpGet("list")]
     public async Task<IActionResult> GetAuthors([FromQuery] GetAuthorsRequest query)
     {
         var result = await _mediator.Send(query);
@@ -56,7 +56,7 @@ public class AuthorsController : ControllerBase
         }
     }
 
-    [HttpPut("update/{idAuthor}")]
+    [HttpPut("{idAuthor}/update")]
     public async Task<IActionResult> UpdateAuthor(int idAuthor, UpdateAuthorCommand command)
     {
         try
@@ -75,7 +75,7 @@ public class AuthorsController : ControllerBase
         }
     }
 
-    [HttpDelete("delete/{idAuthor}")]
+    [HttpDelete("{idAuthor}/delete")]
     public async Task<IActionResult> DeleteAuthor(int idAuthor, [FromBody] DeleteAuthorCommand command)
     {
         try

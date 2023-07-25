@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +19,7 @@ public class GetNotesRequestHandler : IRequestHandler<GetNotesRequest, List<GetN
     public async Task<List<GetNotesResponse>> Handle(GetNotesRequest request, CancellationToken cancellationToken)
     {
         var notes = await _dbContext.Notes
+            .Include(n => n.Author)
             .ToListAsync();
 
         var response = _mapper.Map<List<GetNotesResponse>>(notes);

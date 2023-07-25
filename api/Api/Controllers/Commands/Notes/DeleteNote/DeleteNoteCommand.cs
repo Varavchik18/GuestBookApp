@@ -3,5 +3,5 @@ namespace Api.Controllers.Commands.Notes;
 
 public class DeleteNoteCommand : IRequest<int>
 {
-    public int IdNote { get; set; }
+    protected internal int IdNote { get; set; }
 }
