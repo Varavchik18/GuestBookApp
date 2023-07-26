@@ -8,10 +8,11 @@ namespace YourApiProject.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [EnableCors("GuestBookUI")] 
+    [EnableCors("GuestBookUI")]
     public class CommentsController : ControllerBase
     {
         private readonly IMediator _mediator;
+
         public CommentsController(IMediator mediator)
         {
             _mediator = mediator;
@@ -36,10 +37,7 @@ namespace YourApiProject.Controllers
         {
             try
             {
-                var request = new GetCommentByIdRequest()
-                {
-                    IdComment = id
-                };
+                var request = new GetCommentByIdRequest() { IdComment = id };
                 var result = await _mediator.Send(request);
                 return Ok(result);
             }
@@ -86,8 +84,27 @@ namespace YourApiProject.Controllers
             }
         }
 
+        [HttpPut("{id}/updateDate")]
+        public async Task<IActionResult> UpdateCommentDate([FromRoute] int id, [FromBody] UpdateCommentDateCommand command)
+        {
+            try
+            {
+                command.IdComment = id;
+                var result = await _mediator.Send(command);
+                return Ok(result);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpDelete("{id}/delete")]
-        public async Task<IActionResult> DeleteComment([FromRoute] int id, [FromBody] DeleteCommentCommand command)
+        public async Task<IActionResult> DeleteComment([FromRoute] int id,[FromBody] DeleteCommentCommand command)
         {
             try
             {

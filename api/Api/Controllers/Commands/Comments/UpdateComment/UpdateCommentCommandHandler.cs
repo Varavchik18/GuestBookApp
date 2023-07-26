@@ -22,7 +22,7 @@ public class UpdateCommentCommandHandler : IRequestHandler<UpdateCommentCommand,
         }
         ValidateFields(request.Title, request.Description);
 
-        comment.Update(request.Title, request.Description, request.DateTimeUpdated);
+        comment.Update(request.Title, request.Description, request.DateTimeUpdated, request.ImageUrl);
         await _context.SaveToDbAsync();
 
         return comment.IdComment;

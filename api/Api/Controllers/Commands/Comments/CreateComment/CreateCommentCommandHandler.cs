@@ -23,7 +23,7 @@ public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand,
 
         ValidateFields(request.Title, request.Description);
 
-        var comment = new Comment(request.Title, request.Description, request.DateTimeCreated, request.DateTimeUpdated, author);
+        var comment = new Comment(request.Title, request.Description, request.DateTimeCreated, request.DateTimeUpdated, author, request.ImageUrl);
         _context.Comments.Add(comment);
         await _context.SaveToDbAsync();
 
