@@ -104,11 +104,11 @@ namespace YourApiProject.Controllers
         }
 
         [HttpDelete("{id}/delete")]
-        public async Task<IActionResult> DeleteComment([FromRoute] int id,[FromBody] DeleteCommentCommand command)
+        public async Task<IActionResult> DeleteComment([FromRoute] int id)
         {
             try
             {
-                command.IdComment = id;
+                var command = new DeleteCommentCommand { IdComment = id };
                 var result = await _mediator.Send(command);
                 return Ok(result);
             }
@@ -117,5 +117,6 @@ namespace YourApiProject.Controllers
                 return NotFound(ex.Message);
             }
         }
+
     }
 }

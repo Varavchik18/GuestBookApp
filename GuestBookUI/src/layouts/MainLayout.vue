@@ -7,11 +7,6 @@
     </q-header>
 
     <q-page-container>
-      <!-- Router links for navigation -->
-      <router-link to="/">Home</router-link>
-      <router-link to="/add-comment">Add Comment</router-link>
-
-      <!-- Router view to render the appropriate component based on the route -->
       <router-view />
     </q-page-container>
   </q-layout>

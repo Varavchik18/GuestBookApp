@@ -1,91 +1,357 @@
 <template>
-  <div>
-    <q-table
-      :rows="comments"
-      row-key="idComment"
-      :columns="columns"
-    >
-  <template v-slot:body-cell-author="props">
-    <q-input
-      borderless
-      standout
-      :dense=true
-      readonly
-      :model-value="getSpaced(props.row.author.firstName, props.row.author.lastName)"
-      />
-  </template>
-</q-table>
+  <div class="q-pa-md row items-start q-gutter-md">
+    <div v-for="comment in comments" :key="comment.idComment">
+      <q-card class="my-card" dark flat bordered round>
+        <q-card-section horizontal>
+          <q-card-section class="q-pt-xs">
+            <div class="text-h5 q-mt-sm q-mb-xs title-container">
+              {{ comment.title }}
+            </div>
+            <div class="text-caption text-grey description-container">
+              {{ comment.description }}
+            </div>
+          </q-card-section>
+
+          <q-card-section class="col-5 card-image">
+            <q-img
+              class="rounded-borders image-container"
+              :src="comment.imageUrl"
+            />
+          </q-card-section>
+        </q-card-section>
+
+        <q-separator />
+
+        <q-card-actions>
+          <q-btn icon="event" round color="primary">
+            <q-tooltip content-class="button-tooltip">
+              <div class="button-tooltip">
+                Update Comment Date
+              </div>
+            </q-tooltip>
+            <q-popup-proxy
+              @before-show="updateProxyDate(comment.dateTimeCreated)"
+              cover
+              transition-show="scale"
+              transition-hide="scale"
+            >
+              <q-date v-model="proxyDate">
+                <div class="row items-center justify-end q-gutter-sm">
+                  <q-btn label="Cancel" color="primary" flat v-close-popup />
+                  <q-btn
+                    label="OK"
+                    color="primary"
+                    flat
+                    @click="updateCommentDate(comment.idComment, proxyDate)"
+                    v-close-popup
+                  />
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-btn>
+          <div style="margin-left: 10px">
+            {{ formatDateTimeToUs(comment.dateTimeCreated) }}
+          </div>
+          <q-dialog v-model="showEditPopup" persistent>
+            <q-card style="min-width: 350px">
+              <q-card-section class="q-pt-none" style="margin-top: 15px">
+                <q-input label="Title" stack-label dense v-model="selectedComment.title" :rules="titleRules" autogrow clearable counter/>
+              </q-card-section>
+
+              <q-card-section class="q-pt-none">
+                <q-input label="Description" stack-label dense v-model="selectedComment.description" :rules="descriptionRules" autogrow clearable counter />
+              </q-card-section>
+              <q-card-actions align="right" class="text-primary">
+                <q-btn flat label="Cancel" v-close-popup />
+                <q-btn
+                  flat
+                  label="Save Changes"
+                  @click="onSaveChanges"
+                  v-close-popup
+                  :disabled="hasActiveErrors" />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+          <q-btn
+            style="margin-left: auto"
+            color="secondary"
+            icon="edit"
+            rounded
+            @click="openEditPopup(comment)"
+          >
+            <q-tooltip>
+              <div class="button-tooltip">
+                Edit
+              </div>
+            </q-tooltip>
+          </q-btn>
+          <q-btn
+            color="red-5"
+            icon="delete"
+            rounded
+            @click="deleteComment(comment)"
+          >
+            <q-tooltip>
+              <div class="button-tooltip">
+                Delete
+              </div>
+            </q-tooltip>
+          </q-btn>
+        </q-card-actions>
+      </q-card>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+import { Notify, Dialog } from 'quasar'
 import axios from 'axios'
 import { BASE_URL } from '../api.config'
+
+interface IComment {
+  idComment: number;
+  title: string | null;
+  description: string | null;
+  dateTimeCreated: Date;
+  dateTimeUpdated: Date;
+  imageUrl: string | null;
+  author: {
+    idAuthor: number;
+    firstName: string | null;
+    lastName: string | null;
+    email: string | null;
+    phone: string | null;
+  };
+}
 
 export default defineComponent({
   name: 'CommentList',
 
   data () {
     return {
-      comments: [],
-      columns: [
-        {
-          name: 'title',
-          required: true,
-          label: 'Title',
-          align: 'left',
-          field: 'title'
-        },
-        {
-          name: 'description',
-          required: true,
-          label: 'Description',
-          align: 'left',
-          field: 'description'
-        },
-        {
-          name: 'dateTimeCreated',
-          required: true,
-          label: 'Date Created',
-          align: 'left',
-          field: 'dateTimeCreated',
-          format: (val) => {
-            const date = new Date(val)
-            const day = date.getDate()
-            const month = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(date)
-            const year = date.getFullYear()
-            return `${day} ${month} ${year}`
-          }
-        },
-        {
-          name: 'author',
-          required: true,
-          label: 'Author',
-          align: 'left'
-        }
+      comments: [] as IComment[],
+      proxyDate: ref('2019/03/01'),
+      date: ref(new Date()),
+      showEditPopup: ref(false),
+      selectedComment: ref(null as IComment)
+    }
+  },
+
+  computed: {
+    titleRules () {
+      return [
+        (v) => !!v || 'Title is required.',
+        (v) => (v && v.length <= 50) || 'Title should be less than 50 characters.'
       ]
+    },
+    descriptionRules () {
+      return [
+        (v) => !v || v.length <= 500 || 'Description should be less than 500 characters.'
+      ]
+    },
+    isTitleValid () {
+      return this.selectedComment.title && this.selectedComment.title.length <= 50
+    },
+    isDescriptionValid () {
+      return !this.selectedComment.description || this.selectedComment.description.length <= 500
+    },
+    hasActiveErrors () {
+      return !this.isTitleValid || !this.isDescriptionValid
     }
   },
 
   methods: {
     async fetchCommentsList () {
       try {
-        const response = await axios.get(`${BASE_URL}/comments/list`)
-        this.comments = response.data
-        console.log(this.comments) // Log the comments array after setting it
+        const response = await axios.get<IComment[]>(`${BASE_URL}/comments/list`)
+        this.comments = response.data.map((comment) => {
+          const dateTimeCreated = new Date(comment.dateTimeCreated)
+          const imageUrl = comment.imageUrl ? comment.imageUrl : this.getRandomImage()
+
+          return {
+            ...comment,
+            dateTimeCreated,
+            imageUrl
+          }
+        })
       } catch (error) {
-        console.error('Error fetching comments list:', error)
+        this.showErrorMessage(error)
       }
     },
 
-    getSpaced (firstValue:string, secondValue:string): string {
-      return firstValue + ' ' + secondValue
+    getRandomImage (): string {
+      return `https://picsum.photos/1920/1080?random=${Math.random()}`
+    },
+
+    async updateCommentDate (idComment: number, date: Date) {
+      try {
+        await axios.put(`${BASE_URL}/comments/${idComment}/updateDate`, {
+          dateTimeCreated: new Date(date).toISOString()
+        })
+        this.fetchCommentsList()
+      } catch (error) {
+        this.showErrorMessage(error, 'Error updating comment date: ')
+      }
+    },
+
+    parseDateStringToDateTimeOffset (dateString: string) {
+      const [year, month, day] = dateString.split('/').map(Number)
+
+      const date = new Date(year, month - 1, day)
+
+      const timestamp = date.getTime()
+
+      return { dateTime: new Date(timestamp).toISOString() }
+    },
+
+    getDateForPicker (dateTime: string): string {
+      const dateObject = new Date(dateTime)
+
+      const year = dateObject.getFullYear()
+      const month = dateObject.getMonth() + 1
+      const day = dateObject.getDate()
+
+      const formattedMonth = month.toString().padStart(2, '0')
+      const formattedDay = day.toString().padStart(2, '0')
+
+      const formattedDate = `${year}/${formattedMonth}/${formattedDay}`
+
+      return formattedDate
+    },
+
+    formatDateTimeToUs (dateTime: string) {
+      const options: Intl.DateTimeFormatOptions = {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      }
+
+      const dateObject = new Date(dateTime)
+
+      const formattedDate = dateObject.toLocaleDateString('en-US', options)
+
+      return formattedDate
+    },
+
+    updateProxyDate (date: Date) {
+      this.proxyDate = this.getDateForPicker(date.toISOString())
+    },
+
+    openEditPopup (comment) {
+      this.selectedComment = { ...comment }
+
+      this.showEditPopup = true
+    },
+
+    deleteComment (comment) {
+      Dialog.create({
+        title: 'Delete comment',
+        message: 'Are you sure you want to delete this comment?',
+        cancel: true,
+        persistent: true
+      }).onOk(async () => {
+        try {
+          await axios.delete(`${BASE_URL}/comments/${comment.idComment}/delete`)
+          this.showSucceedMessage('Comment deleted successfully!')
+          this.fetchCommentsList()
+        } catch (error) {
+          this.showErrorMessage(error, 'Error deleting comment: ')
+        }
+      })
+    },
+
+    cancelEdit () {
+      this.editPopupVisible = false
+    },
+    async onSaveChanges () {
+      if (!this.selectedComment) return
+
+      const { idComment, imageUrl } = this.selectedComment
+
+      try {
+        await axios.put(`${BASE_URL}/comments/${idComment}/update`, {
+          title: this.selectedComment.title,
+          description: this.selectedComment.description,
+          imageUrl
+        })
+
+        const originalComment = this.comments.find((comment) => comment.idComment === idComment)
+        if (originalComment) {
+          originalComment.title = this.selectedComment.title
+          originalComment.description = this.selectedComment.description
+        }
+
+        this.showSucceedMessage('Comment updated successfully!')
+      } catch (error) {
+        this.showErrorMessage(error, 'Error updating comment:')
+      }
+
+      this.showEditPopup = false
+    },
+
+    showErrorMessage (error: any, message: string): void {
+      Notify.create({
+        message: `${message} ${error.response.data}`,
+        color: 'negative',
+        icon: 'warning'
+      })
+    },
+
+    showSucceedMessage (message: string): void {
+      Notify.create({
+        message: `${message}`,
+        color: 'positive',
+        icon: 'check'
+      })
     }
   },
 
-  mounted () {
-    this.fetchCommentsList()
+  async mounted () {
+    await this.fetchCommentsList().catch((error) => {
+      console.error('Error fetching comments list:', error)
+    })
   }
 })
 </script>
+
+<style lang="sass" scoped>
+.my-card
+  width: 100%
+  width: 450px
+
+.description-container
+  margin-top: 15px
+  max-height: 200px
+  overflow-y: auto
+
+.title-container
+  max-width: 200px
+  overflow-x: auto
+
+.image-container
+  height: 200px
+  width: 100%
+  object-fit: cover
+  object-position: right
+  border-radius: 8px
+
+.card-image
+  display: flex
+  justify-content: flex-end
+  align-items: flex-start
+
+::-webkit-scrollbar
+  width: 8px
+  height: 8px
+
+::-webkit-scrollbar-thumb
+  background-color: #888
+  border-radius: 4px
+
+::-webkit-scrollbar-thumb:hover
+  background-color: #555
+
+.button-tooltip
+  font-size: 12px
+</style>

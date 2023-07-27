@@ -54,9 +54,9 @@ public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand,
         {
             throw new BadRequestException("Description is required");
         }
-        if (description.Length > 100)
+        if (description.Length > 500)
         {
-            throw new BadRequestException("Description must be less than 100 characters");
+            throw new BadRequestException("Description must be less than 500 characters");
         }
     }
 }
