@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8a8baacPnCPWhOkc0z1spNvZkRa9lgptQOxeZhAYVezuyYpbbyDLtdOuPVBLT7SOTTJ66m+MmfjzMptMi8/KbA==",
+  "dgSpecHash": "NBUe2dU6iVoOGBHhX3x1eQrlu2VqaS459AidrCZmNkLPToWyexnmc/AJFPS64c6T5E2C4Xz/+epoV9MCeVLQnQ==",
   "success": true,
-  "projectFilePath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Api\\Api.csproj",
+  "projectFilePath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\api\\Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pasha\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\pasha\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

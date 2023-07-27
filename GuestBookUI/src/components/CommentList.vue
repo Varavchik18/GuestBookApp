@@ -76,11 +76,11 @@
                     <q-dialog v-model="showEditCommentPopup" >
                       <q-card style="min-width: 350px">
                         <q-card-section class="q-pt-none" style="margin-top: 15px">
-                          <q-input label="Title" stack-label dense v-model="selectedComment.title" :rules="titleRules" autogrow clearable counter/>
+                          <q-input label="Title" stack-label dense v-model="selectedComment.title" :rules="titleRules" autogrow  counter/>
                         </q-card-section>
 
                         <q-card-section class="q-pt-none">
-                          <q-input label="Description" stack-label dense v-model="selectedComment.description" :rules="descriptionRules" autogrow clearable counter />
+                          <q-input label="Description" stack-label dense v-model="selectedComment.description" :rules="descriptionRules" autogrow  counter />
                         </q-card-section>
                         <q-card-actions align="right" class="text-primary">
                           <q-btn flat label="Cancel" v-close-popup />
