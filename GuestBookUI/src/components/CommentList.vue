@@ -153,7 +153,6 @@
                       color="secondary"
                       icon="edit"
                       rounded
-                      @click="openEditPopup(comment)"
                     >
                       <q-tooltip>
                         <div class="button-tooltip">
@@ -165,7 +164,6 @@
                       color="red-5"
                       icon="delete"
                       rounded
-                      @click="deleteComment(comment)"
                     >
                       <q-tooltip>
                         <div class="button-tooltip">
