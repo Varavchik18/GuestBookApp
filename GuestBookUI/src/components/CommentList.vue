@@ -125,8 +125,57 @@
           </q-tab-panel>
 
           <q-tab-panel name="authors">
-            <div class="text-h6">Authors</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            <div v-for="author in authors" :key="author.idAuthor">
+              <q-card class="my-card bg-grey-9 text-white" flat bordered round>
+                <q-card-section>
+                  <div class="text-h6">{{author.firstName + ' ' + author.lastName}}</div>
+                </q-card-section>
+
+                <q-card-section>
+                 <q-chip>
+                    <q-avatar icon="mail" color="white" text-color="black"/>
+                    {{author.email}}
+                  </q-chip>
+                </q-card-section>
+
+                <q-card-section>
+                 <q-chip>
+                    <q-avatar icon="phone" color="white" text-color="black"/>
+                    {{author.phone}}
+                  </q-chip>
+                </q-card-section>
+
+                <q-separator/>
+
+                <q-card-actions>
+                  <q-btn
+                      style="margin-left: auto"
+                      color="secondary"
+                      icon="edit"
+                      rounded
+                      @click="openEditPopup(comment)"
+                    >
+                      <q-tooltip>
+                        <div class="button-tooltip">
+                          Edit
+                        </div>
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn
+                      color="red-5"
+                      icon="delete"
+                      rounded
+                      @click="deleteComment(comment)"
+                    >
+                      <q-tooltip>
+                        <div class="button-tooltip">
+                          Delete
+                        </div>
+                      </q-tooltip>
+                    </q-btn>
+                </q-card-actions>
+              </q-card>
+            </div>
           </q-tab-panel>
         </q-tab-panels>
       </q-card>
@@ -139,6 +188,7 @@ import { defineComponent, ref } from 'vue'
 import { Notify, Dialog } from 'quasar'
 import axios from 'axios'
 import { BASE_URL } from '../api.config'
+import { IAuthor } from './types'
 
 interface IComment {
   idComment: number;
@@ -162,6 +212,7 @@ export default defineComponent({
   data () {
     return {
       comments: [] as IComment[],
+      authors: [] as IAuthor[],
       proxyDate: ref('2019/03/01'),
       date: ref(new Date()),
       showEditCommentPopup: ref(false),
@@ -207,6 +258,15 @@ export default defineComponent({
             imageUrl
           }
         })
+      } catch (error) {
+        this.showErrorMessage(error)
+      }
+    },
+
+    async fetchAuthorsList () {
+      try {
+        const response = await axios.get<IAuthor[]>(`${BASE_URL}/authors/list`)
+        this.authors = response.data
       } catch (error) {
         this.showErrorMessage(error)
       }
@@ -343,6 +403,10 @@ export default defineComponent({
   async mounted () {
     await this.fetchCommentsList().catch((error) => {
       console.error('Error fetching comments list:', error)
+    })
+
+    await this.fetchAuthorsList().catch((error) => {
+      console.error('Error fetching authors list:', error)
     })
   }
 })
