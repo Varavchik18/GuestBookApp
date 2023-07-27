@@ -50,10 +50,6 @@ public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand,
 
     private void ValidateDescription(string description)
     {
-        if (description is null || String.IsNullOrWhiteSpace(description))
-        {
-            throw new BadRequestException("Description is required");
-        }
         if (description.Length > 500)
         {
             throw new BadRequestException("Description must be less than 500 characters");

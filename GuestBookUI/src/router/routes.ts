@@ -5,8 +5,8 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('../components/CommentList.vue') },
-      { path: 'add-comment', component: () => import('../components/AddComment.vue') } // Renders AddComment component on /add route
+      { path: '', component: () => import('../components/CommentList.vue'), name: 'home' }, // Give a name to the home page route
+      { path: 'add-comment', component: () => import('../components/AddComment.vue') }
     ]
   },
   {

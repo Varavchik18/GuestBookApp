@@ -1,103 +1,125 @@
 <template>
-  <div class="q-pa-md row items-start q-gutter-md">
-    <div v-for="comment in comments" :key="comment.idComment">
-      <q-card class="my-card" dark flat bordered round>
-        <q-card-section horizontal>
-          <q-card-section class="q-pt-xs">
-            <div class="text-h5 q-mt-sm q-mb-xs title-container">
-              {{ comment.title }}
-            </div>
-            <div class="text-caption text-grey description-container">
-              {{ comment.description }}
-            </div>
-          </q-card-section>
+  <div class="q-pa-md">
+    <div class="q-gutter-y-md">
+      <q-card>
+        <q-tabs
+          v-model="tab"
+          class=" text-grey-7"
+          align="justify"
+        >
+          <q-tab name="comments" label="Comments" icon="comment"/>
+          <q-tab name="authors" label="Authors" icon="person"/>
+        </q-tabs>
 
-          <q-card-section class="col-5 card-image">
-            <q-img
-              class="rounded-borders image-container"
-              :src="comment.imageUrl"
-            />
-          </q-card-section>
-        </q-card-section>
+        <q-tab-panels v-model="tab" animated>
+          <q-tab-panel name="comments">
+            <div v-for="comment in comments" :key="comment.idComment">
+              <q-card class="my-card bg-grey-9 text-white" flat bordered round>
+                <q-card-section horizontal>
+                  <q-card-section class="q-pt-xs">
+                    <div class="text-h5 q-mt-sm q-mb-xs title-container">
+                      {{ comment.title }}
+                    </div>
+                    <div class="text-caption text-grey-4 description-container">
+                      {{ comment.description }}
+                    </div>
+                  </q-card-section>
 
-        <q-separator />
+                  <q-card-section class="col-5 card-image">
+                    <q-img
+                      class="rounded-borders image-container"
+                      :src="comment.imageUrl"
+                    />
+                  </q-card-section>
+                </q-card-section>
 
-        <q-card-actions>
-          <q-btn icon="event" round color="primary">
-            <q-tooltip content-class="button-tooltip">
-              <div class="button-tooltip">
-                Update Comment Date
-              </div>
-            </q-tooltip>
-            <q-popup-proxy
-              @before-show="updateProxyDate(comment.dateTimeCreated)"
-              cover
-              transition-show="scale"
-              transition-hide="scale"
-            >
-              <q-date v-model="proxyDate">
-                <div class="row items-center justify-end q-gutter-sm">
-                  <q-btn label="Cancel" color="primary" flat v-close-popup />
+                <q-separator />
+
+                <q-card-actions>
+                  <q-btn icon="event" round color="primary">
+                    <q-tooltip content-class="button-tooltip">
+                      <div class="button-tooltip">
+                        Update Comment Date
+                      </div>
+                    </q-tooltip>
+                    <q-popup-proxy
+                      @before-show="updateProxyDate(comment.dateTimeCreated)"
+                      cover
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date v-model="proxyDate">
+                        <div class="row items-center justify-end q-gutter-sm">
+                          <q-btn label="Cancel" color="primary" flat v-close-popup />
+                          <q-btn
+                            label="OK"
+                            color="primary"
+                            flat
+                            @click="updateCommentDate(comment.idComment, proxyDate)"
+                            v-close-popup
+                          />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-btn>
+                  <div style="margin-left: 10px">
+                    {{ formatDateTimeToUs(comment.dateTimeCreated) }}
+                  </div>
+                  <q-dialog v-model="showEditCommentPopup" persistent>
+                    <q-card style="min-width: 350px">
+                      <q-card-section class="q-pt-none" style="margin-top: 15px">
+                        <q-input label="Title" stack-label dense v-model="selectedComment.title" :rules="titleRules" autogrow clearable counter/>
+                      </q-card-section>
+
+                      <q-card-section class="q-pt-none">
+                        <q-input label="Description" stack-label dense v-model="selectedComment.description" :rules="descriptionRules" autogrow clearable counter />
+                      </q-card-section>
+                      <q-card-actions align="right" class="text-primary">
+                        <q-btn flat label="Cancel" v-close-popup />
+                        <q-btn
+                          flat
+                          label="Save Changes"
+                          @click="onSaveChanges"
+                          v-close-popup
+                          :disabled="hasActiveErrors" />
+                      </q-card-actions>
+                    </q-card>
+                  </q-dialog>
                   <q-btn
-                    label="OK"
-                    color="primary"
-                    flat
-                    @click="updateCommentDate(comment.idComment, proxyDate)"
-                    v-close-popup
-                  />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-btn>
-          <div style="margin-left: 10px">
-            {{ formatDateTimeToUs(comment.dateTimeCreated) }}
-          </div>
-          <q-dialog v-model="showEditPopup" persistent>
-            <q-card style="min-width: 350px">
-              <q-card-section class="q-pt-none" style="margin-top: 15px">
-                <q-input label="Title" stack-label dense v-model="selectedComment.title" :rules="titleRules" autogrow clearable counter/>
-              </q-card-section>
+                    style="margin-left: auto"
+                    color="secondary"
+                    icon="edit"
+                    rounded
+                    @click="openEditPopup(comment)"
+                  >
+                    <q-tooltip>
+                      <div class="button-tooltip">
+                        Edit
+                      </div>
+                    </q-tooltip>
+                  </q-btn>
+                  <q-btn
+                    color="red-5"
+                    icon="delete"
+                    rounded
+                    @click="deleteComment(comment)"
+                  >
+                    <q-tooltip>
+                      <div class="button-tooltip">
+                        Delete
+                      </div>
+                    </q-tooltip>
+                  </q-btn>
+                </q-card-actions>
+              </q-card>
+            </div>
+          </q-tab-panel>
 
-              <q-card-section class="q-pt-none">
-                <q-input label="Description" stack-label dense v-model="selectedComment.description" :rules="descriptionRules" autogrow clearable counter />
-              </q-card-section>
-              <q-card-actions align="right" class="text-primary">
-                <q-btn flat label="Cancel" v-close-popup />
-                <q-btn
-                  flat
-                  label="Save Changes"
-                  @click="onSaveChanges"
-                  v-close-popup
-                  :disabled="hasActiveErrors" />
-              </q-card-actions>
-            </q-card>
-          </q-dialog>
-          <q-btn
-            style="margin-left: auto"
-            color="secondary"
-            icon="edit"
-            rounded
-            @click="openEditPopup(comment)"
-          >
-            <q-tooltip>
-              <div class="button-tooltip">
-                Edit
-              </div>
-            </q-tooltip>
-          </q-btn>
-          <q-btn
-            color="red-5"
-            icon="delete"
-            rounded
-            @click="deleteComment(comment)"
-          >
-            <q-tooltip>
-              <div class="button-tooltip">
-                Delete
-              </div>
-            </q-tooltip>
-          </q-btn>
-        </q-card-actions>
+          <q-tab-panel name="authors">
+            <div class="text-h6">Authors</div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </q-tab-panel>
+        </q-tab-panels>
       </q-card>
     </div>
   </div>
@@ -133,8 +155,9 @@ export default defineComponent({
       comments: [] as IComment[],
       proxyDate: ref('2019/03/01'),
       date: ref(new Date()),
-      showEditPopup: ref(false),
-      selectedComment: ref(null as IComment)
+      showEditCommentPopup: ref(false),
+      selectedComment: ref(null as IComment),
+      tab: ref('comments')
     }
   },
 
@@ -241,7 +264,7 @@ export default defineComponent({
     openEditPopup (comment) {
       this.selectedComment = { ...comment }
 
-      this.showEditPopup = true
+      this.showEditCommentPopup = true
     },
 
     deleteComment (comment) {
@@ -264,6 +287,7 @@ export default defineComponent({
     cancelEdit () {
       this.editPopupVisible = false
     },
+
     async onSaveChanges () {
       if (!this.selectedComment) return
 
@@ -287,7 +311,7 @@ export default defineComponent({
         this.showErrorMessage(error, 'Error updating comment:')
       }
 
-      this.showEditPopup = false
+      this.showEditCommentPopup = false
     },
 
     showErrorMessage (error: any, message: string): void {
