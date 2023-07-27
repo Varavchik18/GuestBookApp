@@ -26,12 +26,12 @@
                       </div>
                     </q-card-section>
 
-                    <q-card-section class="col-5 card-image">
+                    <!-- <q-card-section class="col-5 card-image">
                       <q-img
                         class="rounded-borders image-container"
                         :src="comment.imageUrl"
                       />
-                    </q-card-section>
+                    </q-card-section> -->
                   </q-card-section>
 
                   <q-separator />
