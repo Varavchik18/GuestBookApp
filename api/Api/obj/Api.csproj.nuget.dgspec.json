@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Study\\Programming Projects\\GuestBookApp\\api\\api\\Api.csproj": {}
+    "D:\\Study\\GuestBookApp\\api\\api\\Api.csproj": {}
   },
   "projects": {
-    "D:\\Study\\Programming Projects\\GuestBookApp\\api\\api\\Api.csproj": {
+    "D:\\Study\\GuestBookApp\\api\\api\\Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\api\\Api.csproj",
+        "projectUniqueName": "D:\\Study\\GuestBookApp\\api\\api\\Api.csproj",
         "projectName": "Api",
-        "projectPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\api\\Api.csproj",
+        "projectPath": "D:\\Study\\GuestBookApp\\api\\api\\Api.csproj",
         "packagesPath": "C:\\Users\\pasha\\.nuget\\packages\\",
-        "outputPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\api\\obj\\",
+        "outputPath": "D:\\Study\\GuestBookApp\\api\\api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,8 +33,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj": {
-                "projectPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj"
+              "D:\\Study\\GuestBookApp\\api\\Domain\\Domain.csproj": {
+                "projectPath": "D:\\Study\\GuestBookApp\\api\\Domain\\Domain.csproj"
               }
             }
           }
@@ -115,14 +115,14 @@
         }
       }
     },
-    "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj": {
+    "D:\\Study\\GuestBookApp\\api\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj",
+        "projectUniqueName": "D:\\Study\\GuestBookApp\\api\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj",
+        "projectPath": "D:\\Study\\GuestBookApp\\api\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\pasha\\.nuget\\packages\\",
-        "outputPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\obj\\",
+        "outputPath": "D:\\Study\\GuestBookApp\\api\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

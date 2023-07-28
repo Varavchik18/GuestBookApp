@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj": {}
+    "D:\\Study\\GuestBookApp\\api\\Domain\\Domain.csproj": {}
   },
   "projects": {
-    "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj": {
+    "D:\\Study\\GuestBookApp\\api\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj",
+        "projectUniqueName": "D:\\Study\\GuestBookApp\\api\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\Domain.csproj",
+        "projectPath": "D:\\Study\\GuestBookApp\\api\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\pasha\\.nuget\\packages\\",
-        "outputPath": "D:\\Study\\Programming Projects\\GuestBookApp\\api\\Domain\\obj\\",
+        "outputPath": "D:\\Study\\GuestBookApp\\api\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
