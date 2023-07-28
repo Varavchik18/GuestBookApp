@@ -82,12 +82,11 @@ public class AuthorsController : ControllerBase
     }
 
     [HttpDelete("{idAuthor}/delete")]
-    public async Task<IActionResult> DeleteAuthor(int idAuthor, [FromBody] DeleteAuthorCommand command)
+    public async Task<IActionResult> DeleteAuthor(int idAuthor)
     {
         try
         {
-            command.IdAuthor = idAuthor;
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(new DeleteAuthorCommand() { IdAuthor = idAuthor });
             return Ok(result);
         }
         catch (NotFoundException ex)

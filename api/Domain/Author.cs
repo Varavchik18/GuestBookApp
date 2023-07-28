@@ -12,7 +12,6 @@ namespace Domain.Models
         public string? LastName { get; set; }
         [MaxLength(100)]
         public string? Email { get; set; }
-        [MaxLength(13)]
         public string? Phone { get; set; }
         public ICollection<Comment> Comments { get; set; }
 

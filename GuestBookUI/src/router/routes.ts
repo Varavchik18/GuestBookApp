@@ -5,8 +5,9 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('../components/CommentList.vue'), name: 'home' }, // Give a name to the home page route
-      { path: 'add-comment', component: () => import('../components/AddComment.vue') }
+      { path: '', component: () => import('../components/CommentList.vue'), name: 'home' },
+      { path: 'add-comment', component: () => import('../components/AddComment.vue') },
+      { path: 'add-author', component: () => import('../components/AddAuthor.vue') }
     ]
   },
   {

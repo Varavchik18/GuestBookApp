@@ -10,7 +10,6 @@
             :rules="titleRules"
             autogrow
             clearable
-            :error="titleError"
           />
         </div>
 
@@ -23,7 +22,6 @@
             autogrow
             clearable
             counter
-            :error="descriptionError"
           />
         </div>
 
@@ -36,7 +34,6 @@
             autogrow
             clearable
             type="url"
-            :error="imageUrlError"
           />
         </div>
 
@@ -53,7 +50,7 @@
         </div>
 
         <div>
-          <q-btn :disabled="hasActiveErrors" label="Submit" type="submit" color="primary" :disable="hasValidationErrors" />
+          <q-btn :disabled="hasActiveErrors" label="Submit" type="submit" color="primary"/>
           <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
         </div>
 
@@ -66,7 +63,6 @@
 import { defineComponent, ref } from 'vue'
 import { Notify } from 'quasar'
 import axios from 'axios'
-import { useRouter } from 'vue-router'
 import { BASE_URL } from '../api.config'
 import { IAuthor } from './types'
 

@@ -23,7 +23,7 @@ public class UpdateAuthorCommandHandler : IRequestHandler<UpdateAuthorCommand, i
 
         Validate(request.FirstName, request.LastName, request.Phone, request.Email);
 
-        author.Update(request.FirstName, request.LastName, request.Phone, request.Email);
+        author.Update(firstName: request.FirstName, lastName: request.LastName, phone: request.Phone, email: request.Email);
         _context.Authors.Update(author);
         await _context.SaveToDbAsync();
 
@@ -34,7 +34,6 @@ public class UpdateAuthorCommandHandler : IRequestHandler<UpdateAuthorCommand, i
     {
         ValidateFirstName(firstName);
         ValidateLastName(lastName);
-        ValidatePhone(phone);
         ValidateEmail(email);
     }
 
@@ -59,14 +58,6 @@ public class UpdateAuthorCommandHandler : IRequestHandler<UpdateAuthorCommand, i
         if (lastName.Length > 50)
         {
             throw new BadRequestException("Last name must be less than 50 characters");
-        }
-    }
-
-    private void ValidatePhone(string phone)
-    {
-        if (phone.Length > 13)
-        {
-            throw new BadRequestException("Phone must be less than 13 characters");
         }
     }
 

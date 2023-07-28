@@ -125,54 +125,137 @@
           </q-tab-panel>
 
           <q-tab-panel name="authors">
-            <div v-for="author in authors" :key="author.idAuthor">
-              <q-card class="my-card bg-grey-9 text-white" flat bordered round>
-                <q-card-section>
-                  <div class="text-h6">{{author.firstName + ' ' + author.lastName}}</div>
-                </q-card-section>
+            CLICK ON FIELDS TO EDIT THEM :3 <br />
+            JUST TO SHOW ANOTHER FUNCTIONALITY
+            <div class="q-pa-md row items-start q-gutter-md">
+              <div v-for="author in authors" :key="author.idAuthor">
+                <q-card class="my-card bg-grey-9 text-white" flat bordered round>
+                  <q-card-section>
+                    <div class="text-h6">
+                      {{author.firstName }}
+                      <q-popup-edit
+                        v-model="author.firstName"
+                        buttons
+                        label-set="Save"
+                        label-cancel="Close"
+                        :validate="authorFirstNameValidation"
+                        @before-hide="resetError('errorFirstName', 'errorFirstNameMessage')"
+                        @save="onAuthorDataChange(author)"
+                        v-slot="scope"
+                      >
+                        <q-input
+                          type="text"
+                          v-model="scope.value"
+                          hint="Name should be less than 50 characters length"
+                          :error="errorFirstName"
+                          :error-message="errorFirstNameMessage"
+                          maxlength="50"
+                          dense
+                          counter
+                          autofocus
+                          @update:model-value="setAuthorFirstName(scope, author)"
+                        />
+                      </q-popup-edit>
+                    </div>
+                    <div class="text-h6">
+                      {{author.lastName }}
+                      <q-popup-edit
+                        v-model="author.lastName"
+                        buttons
+                        label-set="Save"
+                        label-cancel="Close"
+                        :validate="authorLastNameValidation"
+                        @before-hide="resetError('errorLastName', 'errorLastNameMessage')"
+                        @save="onAuthorDataChange(author)"
+                        v-slot="scope"
+                      >
+                        <q-input
+                          type="text"
+                          v-model="scope.value"
+                          hint="Name should be less than 50 characters length"
+                          :error="errorLastName"
+                          :error-message="errorLastNameMessage"
+                          maxlength="50"
+                          dense
+                          counter
+                          autofocus
+                          @update:model-value="setAuthorLastName(scope, author)"
+                        />
+                      </q-popup-edit>
+                    </div>
+                  </q-card-section>
 
-                <q-card-section>
-                 <q-chip>
-                    <q-avatar icon="mail" color="white" text-color="black"/>
-                    {{author.email}}
-                  </q-chip>
-                </q-card-section>
+                  <q-card-section>
+                  <q-chip>
+                      <q-avatar icon="mail" color="white" text-color="black"/>
+                      {{author.email}}
+                      <q-popup-edit
+                        v-model="author.email"
+                        buttons
+                        label-set="Save"
+                        label-cancel="Close"
+                        @save="onAuthorDataChange(author)"
+                        v-slot="scope"
+                      >
+                        <q-input
+                          type="text"
+                          v-model="scope.value"
+                          hint="Email should be less than 100 characters length"
+                          maxlength="100"
+                          dense
+                          counter
+                          autofocus
+                          @update:model-value="setAuthorEmail(scope, author)"
+                        />
+                      </q-popup-edit>
+                    </q-chip>
+                  </q-card-section>
 
-                <q-card-section>
-                 <q-chip>
-                    <q-avatar icon="phone" color="white" text-color="black"/>
-                    {{author.phone}}
-                  </q-chip>
-                </q-card-section>
+                  <q-card-section>
+                  <q-chip>
+                      <q-avatar icon="phone" color="white" text-color="black"/>
+                      {{author.phone}}
+                      <q-popup-edit
+                        v-model="author.phone"
+                        buttons
+                        label-set="Save"
+                        label-cancel="Close"
+                        @save="onAuthorDataChange(author)"
+                        v-slot="scope"
+                      >
+                        <q-input
+                          type="text"
+                          v-model="scope.value"
+                          hint="Phone should be less or equal than 13 characters length"
+                          maxlength="13"
+                          dense
+                          counter
+                          autofocus
+                          @update:model-value="setAuthorPhone(scope, author)"
+                        />
+                      </q-popup-edit>
+                    </q-chip>
+                  </q-card-section>
 
-                <q-separator/>
+                  <q-separator/>
 
-                <q-card-actions>
-                  <q-btn
-                      style="margin-left: auto"
-                      color="secondary"
-                      icon="edit"
-                      rounded
-                    >
-                      <q-tooltip>
-                        <div class="button-tooltip">
-                          Edit
-                        </div>
-                      </q-tooltip>
-                    </q-btn>
-                    <q-btn
-                      color="red-5"
-                      icon="delete"
-                      rounded
-                    >
-                      <q-tooltip>
-                        <div class="button-tooltip">
-                          Delete
-                        </div>
-                      </q-tooltip>
-                    </q-btn>
-                </q-card-actions>
-              </q-card>
+                  <q-card-actions>
+                      <q-btn
+                        style="margin-left: auto; margin-right: 15px"
+                        color="red-5"
+                        icon="delete"
+                        rounded
+                        @click="onDeleteAuthor(author)"
+                      >
+                        <q-tooltip>
+                          <div class="button-tooltip">
+                            Delete
+                          </div>
+                        </q-tooltip>
+                      </q-btn>
+                  </q-card-actions>
+                </q-card>
+              </div>
             </div>
           </q-tab-panel>
         </q-tab-panels>
@@ -187,6 +270,7 @@ import { Notify, Dialog } from 'quasar'
 import axios from 'axios'
 import { BASE_URL } from '../api.config'
 import { IAuthor } from './types'
+import { _ } from 'lodash'
 
 interface IComment {
   idComment: number;
@@ -215,7 +299,15 @@ export default defineComponent({
       date: ref(new Date()),
       showEditCommentPopup: ref(false),
       selectedComment: ref(null as IComment),
-      tab: ref('comments')
+      tab: ref('comments'),
+      errorFirstName: ref(false),
+      errorLastName: ref(false),
+      errorEmail: ref(false),
+      errorPhone: ref(false),
+      errorFirstNameMessage: ref(''),
+      errorLastNameMessage: ref(''),
+      errorEmailMessage: ref(''),
+      errorPhoneMessage: ref('')
     }
   },
 
@@ -265,6 +357,7 @@ export default defineComponent({
       try {
         const response = await axios.get<IAuthor[]>(`${BASE_URL}/authors/list`)
         this.authors = response.data
+        this.fakeAuthors = response.data
       } catch (error) {
         this.showErrorMessage(error)
       }
@@ -334,6 +427,22 @@ export default defineComponent({
       this.showEditCommentPopup = true
     },
 
+    async onAuthorDataChange (author: IAuthor) {
+      try {
+        await axios.put(`${BASE_URL}/authors/${author.idAuthor}/update`, {
+          firstName: author.firstName,
+          lastName: author.lastName,
+          email: author.email,
+          phone: author.phone
+        })
+        this.showSucceedMessage('Author updated successfully!')
+      } catch (error) {
+        this.showErrorMessage(error, 'Error updating author: ')
+      }
+
+      this.fetchAuthorsList()
+    },
+
     deleteComment (comment) {
       Dialog.create({
         title: 'Delete comment',
@@ -347,6 +456,23 @@ export default defineComponent({
           this.fetchCommentsList()
         } catch (error) {
           this.showErrorMessage(error, 'Error deleting comment: ')
+        }
+      })
+    },
+
+    onDeleteAuthor (author: IAuthor) {
+      Dialog.create({
+        title: 'Delete author',
+        message: 'Are you sure you want to delete this author?',
+        cancel: true,
+        persistent: true
+      }).onOk(async () => {
+        try {
+          await axios.delete(`${BASE_URL}/authors/${author.idAuthor}/delete`)
+          this.showSucceedMessage('Author deleted successfully!')
+          this.fetchAuthorsList()
+        } catch (error) {
+          this.showErrorMessage(error, 'Error deleting author: ')
         }
       })
     },
@@ -395,6 +521,53 @@ export default defineComponent({
         color: 'positive',
         icon: 'check'
       })
+    },
+
+    resetError (fieldName, errorMessage) {
+      this[fieldName] = false
+      this[errorMessage] = ''
+    },
+
+    authorFirstNameValidation (val) {
+      if (_.isNil(val) || _.isEmpty(_.trim(val))) {
+        this.errorFirstName = true
+        this.errorFirstNameMessage = 'First Name is required'
+        return false
+      }
+      this.errorFirstName = false
+      this.errorFirstNameMessage = ''
+      return true
+    },
+
+    authorLastNameValidation (val) {
+      if (_.isNil(val) || _.isEmpty(_.trim(val))) {
+        this.errorLastName = true
+        this.errorLastNameMessage = 'Last Name is required'
+        return false
+      }
+      this.errorLastName = false
+      this.errorLastNameMessage = ''
+      return true
+    },
+
+    setAuthorFirstName (scope: any, author: IAuthor) {
+      if (this.authorFirstNameValidation(scope.value)) {
+        author.firstName = scope.value
+      }
+    },
+
+    setAuthorLastName (scope: any, author: IAuthor) {
+      if (this.authorLastNameValidation(scope.value)) {
+        author.lastName = scope.value
+      }
+    },
+
+    setAuthorEmail (scope: any, author: IAuthor) {
+      author.email = scope.value
+    },
+
+    setAuthorPhone (scope: any, author: IAuthor) {
+      author.phone = scope.value
     }
   },
 
